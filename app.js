@@ -50,6 +50,24 @@ app.get('/books/:id', function(req, res){
     })
 });
 
+//POST endpoint
+app.post('/book', function(req, res){
+    var newBook = new Book();
+
+    newBook.title = req.body.title;
+    newBook.author = req.body.author;
+    newBook.category = req.body.category;
+    
+    newBook.save(function(err, book){
+        if(err){
+            res.send('error saving the book');
+        }else {
+            console.log(book);
+            res.send(book);
+        }
+    });
+});
+
 app.listen(port, function() {
     console.log('Your app is listsening on port ' + port);
 });
