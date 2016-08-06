@@ -50,7 +50,7 @@ app.get('/books/:id', function(req, res){
     })
 });
 
-//POST endpoint
+//POST endpoint route
 app.post('/book', function(req, res){
     var newBook = new Book();
 
@@ -66,6 +66,35 @@ app.post('/book', function(req, res){
             res.send(book);
         }
     });
+});
+
+//POST another way to do a post endpoint using the ENTIRE request.body
+app.post('/book2', function(req, res){
+    Book.create(req.body, function(err, book){
+        if(err) {
+            res.send("error saving book");
+        }else {
+            console.log(book);
+            res.send(book);
+        }
+    });
+});
+
+//PUT endpoint UPDATING an object
+app.put('/book/:id', function (req, res) {
+    Book.findOneAndUpdate({
+        _id: req.params.id
+    },
+    { $set: { title: req.body.title }},
+        { upsert: true},
+        function (err, newBook){
+            if(err) {
+                res.send("error, unable to update");
+            }else {
+                console.log(newBook);
+                res.send(newBook);
+            }
+        });
 });
 
 app.listen(port, function() {
