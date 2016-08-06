@@ -97,6 +97,20 @@ app.put('/book/:id', function (req, res) {
         });
 });
 
+//DELETE endpoint
+app.delete('/book/:id', function (req, res){
+    Book.findOneAndRemove({
+        _id: req.params.id
+    },function(err, book){
+        if(err) {
+            res.send("error, couldn't delete it");
+        }else {
+            console.log(book);
+            res.status(204);
+        }
+    });
+});
+
 app.listen(port, function() {
     console.log('Your app is listsening on port ' + port);
 });
